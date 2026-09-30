@@ -1,0 +1,14 @@
+{
+    "Chicken": {
+        "count": 30,
+        "daily_norm": 5.0
+    },
+    "Cow": {
+        "count": 15,
+        "daily_norm": 25.0
+    },
+    "Sheep": {
+        "count": 17,
+        "daily_norm": 25.0
+    }
+}
