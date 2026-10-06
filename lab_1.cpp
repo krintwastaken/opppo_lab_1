@@ -18,8 +18,8 @@ class HistoricalEvent {
 
     virtual void print() const = 0;
 
-    std::string getName() const { return name; }
-    std::string getDate() const { return date; }
+    const std::string& getName() const { return name; }
+    const std::string& getDate() const { return date; }
 };
 
 // Производный класс: Битва
