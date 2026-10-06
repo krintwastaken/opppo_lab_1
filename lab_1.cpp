@@ -1,20 +1,18 @@
-﻿#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <string>
+﻿#include <fstream>
+#include <iostream>
 #include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // Базовый класс для всех исторических событий
 class HistoricalEvent {
-protected:
+   protected:
     std::string name;
     std::string date;
 
-public:
-    HistoricalEvent(const std::string& n, const std::string& d)
-        : name(n), date(d) {
-    }
+   public:
+    HistoricalEvent(const std::string& n, const std::string& d) : name(n), date(d) {}
 
     virtual ~HistoricalEvent() = default;
 
@@ -26,35 +24,30 @@ public:
 
 // Производный класс: Битва
 class Battle : public HistoricalEvent {
-private:
-    std::string location; // Место битвы
+   private:
+    std::string location;  // Место битвы
 
-public:
+   public:
     Battle(const std::string& n, const std::string& d, const std::string& loc)
-        : HistoricalEvent(n, d), location(loc) {
-    }
+        : HistoricalEvent(n, d), location(loc) {}
 
     void print() const override {
-        std::cout << "[Битва] " << name
-            << " | Дата: " << date
-            << " | Место: " << location << "\n";
+        std::cout << "[Битва] " << name << " | Дата: " << date << " | Место: " << location << "\n";
     }
 };
 
 // Производный класс: Договор
 class Treaty : public HistoricalEvent {
-private:
-    std::string parties; // Стороны договора
+   private:
+    std::string parties;  // Стороны договора
 
-public:
+   public:
     Treaty(const std::string& n, const std::string& d, const std::string& p)
-        : HistoricalEvent(n, d), parties(p) {
-    }
+        : HistoricalEvent(n, d), parties(p) {}
 
     void print() const override {
-        std::cout << "[Договор] " << name
-            << " | Дата: " << date
-            << " | Стороны: " << parties << "\n";
+        std::cout << "[Договор] " << name << " | Дата: " << date << " | Стороны: " << parties
+                  << "\n";
     }
 };
 
@@ -72,11 +65,8 @@ void handleAdd(const std::string& args, std::vector<std::unique_ptr<HistoricalEv
     std::string type, name, date, extra;
 
     // Считываем поля, разделенные ';'
-    if (std::getline(ss, type, ';') &&
-        std::getline(ss, name, ';') &&
-        std::getline(ss, date, ';') &&
+    if (std::getline(ss, type, ';') && std::getline(ss, name, ';') && std::getline(ss, date, ';') &&
         std::getline(ss, extra)) {
-
         type = trim(type);
         name = trim(name);
         date = trim(date);
@@ -84,18 +74,17 @@ void handleAdd(const std::string& args, std::vector<std::unique_ptr<HistoricalEv
 
         if (type == "Battle") {
             events.push_back(std::make_unique<Battle>(name, date, extra));
-        }
-        else if (type == "Treaty") {
+        } else if (type == "Treaty") {
             events.push_back(std::make_unique<Treaty>(name, date, extra));
-        }
-        else {
+        } else {
             std::cout << "Неизвестный тип события: " << type << "\n";
         }
     }
 }
 
 // Обработка команды REM (условие вида: поле = значение)
-void handleRem(const std::string& condition, std::vector<std::unique_ptr<HistoricalEvent>>& events) {
+void handleRem(const std::string& condition,
+               std::vector<std::unique_ptr<HistoricalEvent>>& events) {
     std::stringstream ss(condition);
     std::string field, eq, val;
 
@@ -108,20 +97,18 @@ void handleRem(const std::string& condition, std::vector<std::unique_ptr<Histori
         return;
     }
 
-    for (auto it = events.begin(); it != events.end(); ) {
+    for (auto it = events.begin(); it != events.end();) {
         bool match = false;
 
         if (field == "date" && (*it)->getDate() == val) {
             match = true;
-        }
-        else if (field == "name" && (*it)->getName() == val) {
+        } else if (field == "name" && (*it)->getName() == val) {
             match = true;
         }
 
         if (match) {
-            it = events.erase(it); // Удаление и переход к следующему
-        }
-        else {
+            it = events.erase(it);  // Удаление и переход к следующему
+        } else {
             ++it;
         }
     }
@@ -141,7 +128,6 @@ void handlePrint(const std::vector<std::unique_ptr<HistoricalEvent>>& events) {
 }
 
 int main() {
-
     setlocale(LC_ALL, "");
 
     std::string filename = "input.txt";
@@ -167,13 +153,11 @@ int main() {
             std::string rest;
             std::getline(ss, rest);
             handleAdd(rest, events);
-        }
-        else if (command == "REM") {
+        } else if (command == "REM") {
             std::string condition;
             std::getline(ss, condition);
             handleRem(condition, events);
-        }
-        else if (command == "PRINT") {
+        } else if (command == "PRINT") {
             handlePrint(events);
         }
     }
